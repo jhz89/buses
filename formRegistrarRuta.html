@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>App PhoneGap</title>
+		<link rel="stylesheet" href="loading.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js" ></script>
+		<script src="js/bootstrap-datepicker.min.js" ></script>	
+		<!-- <script type="text/javascript">
+			            $(function () {
+			                $('#datetimepicker3').datetimepicker({
+			                    format: 'LT'
+			                });
+			            });
+		</script> -->
+		<script>
+			            $(function () {
+			            	$.fn.datepicker.defaults.format = "yyyy/mm/dd";
+								$('.datepicker').datepicker({
+							    format: 'yyyy/mm/dd',
+							    startDate: '-3d'
+							});
+			            });
+		</script>
+		<script>				
+
+			window.onload = function()
+		{
+			$("#btnRegistrar").click(enviar);
+		}
+
+		function enviar() { 
+		  var origen=$("#origen").val(); 
+		  var destino=$("#destino").val(); 
+		  var fechaini=$('#fechaini').val();
+		  var fechafin=$('#fechafin').val();
+		  
+		  $.ajax({ 
+		  async:true,  
+		  type: "POST", 
+		  dataType: "html", contentType: "application/x-www-form-urlencoded", 
+		  url:"https://sistemadebuses.000webhostapp.com/buses/registrarRuta.php", 
+		  data:"origen="+origen+"&destino="+destino+"&fechaini="+fechaini+"&fechafin="+fechafin, beforeSend:inicioEnvio, success:llegadaDatos, 
+		  timeout:4000, 
+		  error:problemas }); 
+		  return false; 
+		} 
+
+				 function inicioEnvio(datos)
+		{
+			$("#divLoader").removeClass("nb-hidden");
+		}
+
+		function llegadaDatos(datos)
+		{
+			$("#divLoader").addClass("nb-hidden");
+			$("#divWarning").addClass("nb-hidden");
+			$("#divSucces").removeClass("nb-hidden");
+			$("#divSucces").text(datos);
+		}
+
+		function problemas()
+		{
+			$("#divLoader").addClass("nb-hidden");
+			$("#divSucces").addClass("nb-hidden");
+			$("#divWarning").removeClass("nb-hidden");
+			$("#divSucces").text('Problemas en el servidor.');
+		}
+
+		</script>	
+	</head>
+	<body>
+		<ul class="nav nav-pills">
+		  <li role="presentation" class="active"><a href="index.html">Home</a></li>
+		  <li role="presentation"><a href="consultarRuta.html">Consultar Todas las Rutas</a></li>
+		  <li role="presentation"><a href="formRegistrarCliente.html">Registrar Cliente</a></li>
+		  <li role="presentation"><a href="formRegistrarRuta.html">Registrar Ruta</a></li>
+		  <li role="presentation"><a href="formConsultarRutaEspecifica.html">Consultar Ruta por Criterio</a></li>
+		  <li role="presentation"><a href="formReservarTicket.html">Reservar Ticket</a></li>
+		</ul>
+		
+		<div class="col-sm-3"></div>
+
+		<center><div class="col-sm-6">
+		<center><h1 class="text-primary">Registrar Ruta</h1></center>
+		<form name="formRegistrar">
+			<div class="form-group">
+				<label for="origen">Origen</label>
+				<input class="form-control" id="origen" name="origen" placeholder="Origen">
+			</div>
+			<div class="form-group">
+				<label for="destino">Destino</label>
+				<input type="text" class="form-control" id="destino" name="destino" placeholder="Destino">
+			</div>
+
+			<label for="fechaini">Fecha Inicio</label>
+			<div class="input-group form-group date" data-provide="datepicker">				
+			    <input type="text" class="form-control" id="fechaini" name="fechaini" placeholder="AAAA/MM/DD">
+			    <div class="input-group-addon">
+			        <span class="glyphicon glyphicon-th"></span>
+			    </div>
+			</div>
+
+			<!-- <div class="container">
+			    <div class="row">
+			        <div class='col-sm-6'>
+			            <div class="form-group">
+			                <div class='input-group date' id='datetimepicker3'>
+			                    <input type='text' class="form-control" id="fechaini" name="fechaini" />
+			                    <span class="input-group-addon">
+			                        <span class="glyphicon glyphicon-time"></span>
+			                    </span>
+			                </div>
+			            </div>
+			        </div>			        
+			    </div>
+			</div> -->
+
+			<label for="fechafin">Fecha Fin</label>	
+			<div class="input-group form-group date" data-provide="datepicker">				
+			    <input type="text" class="form-control" id="fechafin" name="fechafin" placeholder="AAAA/MM/DD">	
+			    <div class="input-group-addon">
+			         <span class="glyphicon glyphicon-th"></span> 
+			    </div>		    
+			</div>
+						
+			<div class="form-group">
+				<div class="col-sm-12">
+					<br /><center><button type="button" id="btnRegistrar" class="btn btn-primary">Registrar</button></center>
+				</div>
+			</div>	
+
+			<div class="form-group">
+				<div class="col-sm-12">
+					<br /><div id="divSucces" class="alert alert-success nb-hidden" role="alert"></div>
+				</div>
+			</div>
+			
+
+			</form>		
+
+			<div class="demo nb-hidden" id="divLoader">
+		  <svg class="loader">
+			<filter id="blur">
+			  <fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur>
+			</filter>
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#F4F519" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-2">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#DE2FFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-3">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#FF5932" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-4">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#E97E42" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-5">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="white" stroke-width="6" stroke-linecap="round" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-6">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#00DCA3" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-7">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="purple" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-8">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#AAEA33" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		</div>
+
+		</div>
+					
+	</body>
+</html>

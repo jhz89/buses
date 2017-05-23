@@ -1,0 +1,36 @@
+<script>
+
+function enviar() { 
+  var nombre=$("#nombre").val(); 
+  var apellido=$("#apellido").val(); 
+  var placa=$("#placa").val(); 
+  var cedula=$("#cedula").val(); 
+
+  $.ajax({ 
+  async:true, 
+  type: "POST", 
+  dataType: "html", contentType: "application/x-www-form-urlencoded", 
+  url:"reservar.php", 
+  data:"nombre="+nombre+"&apellido="+apellido+"&placa="+placa+"&cedula="+cedula, beforeSend:inicioEnvio, success:llegadaDatos, 
+  timeout:4000, 
+  error:problemas }); 
+  return false; 
+} 
+
+ function inicioEnvio(datos)
+        {
+            $("#respuesta").text(datos);
+        }
+
+        function llegadaDatos(datos)
+        {
+            $("#respuesta").text(datos);
+                       
+        }
+
+        function problemas()
+        {
+            $("#respuesta").text('Problemas en el servidor.');
+        }
+
+</script>

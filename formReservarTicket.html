@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>App PhoneGap</title>
+		<link rel="stylesheet" href="loading.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js" ></script>		
+		<script src="js/bootstrap-datepicker.min.js" ></script>	
+		<script>
+			window.onload = function()
+				{
+					$("#btnReservar").click(enviar);			
+				}
+
+				function enviar() 
+				{ 
+				  var cedula = $("#cedula").val();
+				  var id_ruta = $("#id_ruta").val();		  
+				 
+				  $.ajax({ 
+				  async:true, 
+				  type: "POST", 
+				  dataType: "html", contentType: "application/x-www-form-urlencoded", 
+				  url:"https://sistemadebuses.000webhostapp.com/buses/reservarTicket.php",
+				  data:"cedula="+cedula+"&id_ruta="+id_ruta, beforeSend:inicioEnvio, success:llegadaDatos, 
+				  timeout:4000, 
+				  error:problemas }); 
+				  return false; 
+				} 
+				
+				 function inicioEnvio(datos)
+				{
+					$("#divLoader").removeClass("nb-hidden");				
+				}
+
+				function llegadaDatos(datos) 
+				{
+					$("#divLoader").addClass("nb-hidden");
+					$("#divWarning").addClass("nb-hidden");
+					$("#divSucces").removeClass("nb-hidden");
+					$("#divSucces").text(datos);
+								
+				}
+
+				function problemas()
+				{
+					
+					$("#divLoader").addClass("nb-hidden");
+					$("#divSucces").addClass("nb-hidden");
+					$("#divWarning").removeClass("nb-hidden");
+					$("#divSucces").text('Problemas en el servidor.');
+					
+				}
+		</script>
+		<!-- <script>
+			            $(function () {
+			            	$.fn.datepicker.defaults.format = "yyyy/mm/dd";
+								$('.datepicker').datepicker({
+							    format: 'yyyy/mm/dd',
+							    startDate: '-3d'
+							});
+			            });
+			        </script> -->
+			
+	</head>
+	<body>
+		<ul class="nav nav-pills">
+		  <li role="presentation" class="active"><a href="index.html">Home</a></li>
+		  <li role="presentation"><a href="consultarRuta.html">Consultar Todas las Rutas</a></li>
+		  <li role="presentation"><a href="formRegistrarCliente.html">Registrar Cliente</a></li>
+		  <li role="presentation"><a href="formRegistrarRuta.html">Registrar Ruta</a></li>
+		  <li role="presentation"><a href="formConsultarRutaEspecifica.html">Consultar Ruta por Criterio</a></li>
+		  <li role="presentation"><a href="formReservarTicket.html">Reservar Ticket</a></li>
+		</ul>
+		
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6">
+		<center><h1 class="text-primary">Reservar Ticket</h1></center>
+
+		
+		<center><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'>Reservar</button></center>
+
+		<form name="reservarTicket">	
+				
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">Reservar Ticket</h4>
+			      </div>
+			      <div class="modal-body">
+					<div class="form-group">
+							<label for="cedula">Ingrese su cedula Para Reservar (Recuerde que debe estar resgitrado)</label>
+							<input class="form-control" id="cedula" name="cedula" placeholder="Cedula">
+					</div>
+			      </div>
+			      <div class="modal-body">
+					<div class="form-group">
+							<label for="cedula">ID Ruta</label>
+							<input class="form-control" id="id_ruta" name="id_ruta" placeholder="ID Ruta">
+					</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnReservar">Reservar</button>
+					 <div class="form-group">
+						<div class="col-sm-12">
+							<br /><div id="divSucces" class="alert alert-success nb-hidden" role="alert"></div>
+						</div>
+					</div>
+			      </div>
+			    </div>
+			  </div>			  
+			</div>		
+			
+
+			<!-- <div class="form-group">
+				<label for="cedula">Ingrese su cedula Para Reservar (Recuerde que debe estar resgitrado)</label>
+				<input class="form-control" id="cedula" name="cedula" placeholder="Cedula">
+			</div>
+
+			<div class="form-group">
+				<label for="cedula">ID Ruta</label>
+				<input class="form-control" id="id_ruta" name="id_ruta" placeholder="ID Ruta">
+			</div>
+
+
+			<div class="form-group">
+				<div class="col-sm-12">
+					<br /><center><button type="button" id="btnReservar" class="btn btn-primary">Registrar</button></center>
+				</div>
+			</div>	
+
+			<div class="form-group">
+				<div class="col-sm-12">
+					<br /><div id="divSucces" class="alert alert-success nb-hidden" role="alert"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12">
+					<br /><div id="divWarning" class="alert alert-warning nb-hidden" role="alert"></div>
+				</div>
+			</div> -->
+
+
+			</form>
+
+			<div class="demo nb-hidden" id="divLoader">
+		  <svg class="loader">
+			<filter id="blur">
+			  <fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur>
+			</filter>
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#F4F519" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-2">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#DE2FFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-3">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#FF5932" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-4">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#E97E42" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-5">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="white" stroke-width="6" stroke-linecap="round" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-6">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#00DCA3" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-7">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="purple" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-8">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#AAEA33" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		</div>
+
+		</div>	
+
+								
+	</body>
+</html>

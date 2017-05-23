@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>App PhoneGap</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js" ></script>
+		<script>
+			window.onload = function()
+			{
+				enviar();
+			}
+
+			function enviar() 
+			{ 
+			  // var id_ruta = $("#id_ruta").val(); 
+			  // var origen = $("#origen").val(); 
+			  // var destino = $("#destino").val(); 
+			  // var fechaini = $("#fechaini").val(); 
+			  // var fechaini = $("#fechafin").val(); 
+
+			  $.ajax({ 
+			  async:true, 
+			  type: "POST", 
+			  dataType: "html", contentType: "application/x-www-form-urlencoded", 
+			  url:"https://sistemadebuses.000webhostapp.com/buses/consultarRuta.php", 
+			  data:"", beforeSend:inicioEnvio, success:llegadaDatos, 
+			  timeout:4000, 
+			  error:problemas }); 
+			  return false; 
+			} 
+
+			 function inicioEnvio(datos)
+			{
+				$("#divLoader").removeClass("nb-hidden");
+			}
+
+			function llegadaDatos(datos)
+			{
+				$("#divLoader").addClass("nb-hidden");
+				$("#divReservas").html(datos);
+			}
+
+			function problemas()
+			{
+				$("#divLoader").addClass("nb-hidden");
+				$("#divSucces").text('Problemas en el servidor.');
+			}
+
+
+		</script>
+	</head>
+	<body>
+		<ul class="nav nav-pills">
+		  <li role="presentation" class="active"><a href="index.html">Home</a></li>
+		  <li role="presentation"><a href="consultarRuta.html">Consultar Todas las Rutas</a></li>
+		  <li role="presentation"><a href="formRegistrarCliente.html">Registrar Cliente</a></li>
+		  <li role="presentation"><a href="formRegistrarRuta.html">Registrar Ruta</a></li>
+		  <li role="presentation"><a href="formConsultarRutaEspecifica.html">Consultar Ruta por Criterio</a></li>
+		  <li role="presentation"><a href="formReservarTicket.html">Reservar Ticket</a></li>
+		</ul>
+
+		<div class="col-sm-3"></div>
+
+		<div class="col-sm-6">
+
+		<center><h1 class="text-primary">Rutas</h1></center>
+		
+		<div id="divReservas"></div>
+		
+		<div class="demo nb-hidden" id="divLoader">
+		  <svg class="loader">
+			<filter id="blur">
+			  <fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur>
+			</filter>
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#F4F519" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-2">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#DE2FFF" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-3">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#FF5932" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-4">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#E97E42" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-5">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="white" stroke-width="6" stroke-linecap="round" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-6">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#00DCA3" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-7">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="purple" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>
+		  </svg>
+		  <svg class="loader loader-8">
+			<circle cx="75" cy="75" r="60" fill="transparent" stroke="#AAEA33" stroke-width="6" stroke-linecap="round" stroke-dasharray="385" stroke-dashoffset="385" filter="url(#blur)"></circle>			
+		  </svg>		  
+		</div>
+		</div>
+	</body>
+</html>
